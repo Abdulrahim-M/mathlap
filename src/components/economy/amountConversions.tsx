@@ -1,5 +1,5 @@
 
-import {SetStateAction, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import InputComponent from "@/components/inputComponent";
 import {initWasm, convertFFAmount, convertDPAmount} from "./calc";
 
@@ -11,79 +11,87 @@ export default function AmountConversion() {
     const [result, setResult] = useState("0");
 
     useEffect(() => {
-        async function run(){
-            initWasm();
-        }
+        async function run() { initWasm(); }
         run();
-    })
+    }, []);
 
     function calc() {
-        if (type === "ff->dp") setResult(
-            String(
-                convertFFAmount(
-                    Number(amount),
-                    Number(interest)
-                ).toFixed(6)
-            )
-        );
-        else setResult(
-            String(
-                convertDPAmount(
-                    Number(amount),
-                    Number(interest)
-                ).toFixed(6)
-            )
-        );
+        const value = type === "ff->dp"
+            ? convertFFAmount(Number(amount), Number(interest))
+            : convertDPAmount(Number(amount), Number(interest));
+
+        setResult(value.toFixed(6));
     }
 
 
     return (
-        <>
-            <div className="flex flex-col items-center justify-center mr-5 my-28 md:my-14">
-                <h1 className="md:text-xl font-semibold">Payment Continuous/Discrete Amount Conversion</h1>
+        <div className="flex flex-col gap-6">
 
-                <div className="flex flex-col md:flex-row">
-                    <div className="flex mt-8 justify-around flex-row md:flex-col">
-                        <div className="flex flex-col">
-                            <h5>The type of Interest used: </h5>
-                            <label className="text-sm font-medium">
-                                <input
-                                    type="radio"
-                                    value="ff->dp"
-                                    checked={type === "ff->dp"}
-                                    onChange={(e) => setType(e.target.value)}
-                                    className="mr-1"
-                                />
-                                {"Fund Flow -> Discrete"}
-                            </label>
-                            <label className="text-sm font-medium">
-                                <input
-                                    type="radio"
-                                    value="dp->ff"
-                                    checked={type === "dp->ff"}
-                                    onChange={(e) => setType(e.target.value)}
-                                    className="mr-1"
-                                />
-                                {"Discrete -> Fund Flow"}
-                            </label>
-                        </div>
-                        <div className="flex flex-col mx-5 justify-center items-center content-center">
-                            <button
-                                onClick={() => {calc();}}
-                                className="my-4 px-2 py-1 bg-gray-800 text-white rounded-md shadow"
-                            >
-                                Result
-                            </button>
-                            <div className="flex justify-center">{result}</div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col mb-5 ">
-                        <InputComponent text={"Amound"} input={amount} hint={"Fund-Flow/Discrete payment amount"} setState={setAmount} />
-                        <InputComponent text={"Interest"} input={interest} hint={"Enter Interest"} setState={setInterest} />
+            {/* Title (centered) */}
+            <h2 className="text-2xl font-semibold text-center">
+                Payment Continuous/Discrete Conversion
+            </h2>
+
+            {/* Settings */}
+            <div className="flex flex-col gap-4">
+                <div>
+                    <h3 className="font-medium mb-1">Conversion Type</h3>
+
+                    <div className="flex flex-col gap-1">
+                        <label className="text-sm font-medium">
+                            <input
+                                type="radio"
+                                value="ff->dp"
+                                checked={type === "ff->dp"}
+                                onChange={(e) => setType(e.target.value)}
+                                className="mr-1"
+                            />
+                            Fund Flow → Discrete
+                        </label>
+
+                        <label className="text-sm font-medium">
+                            <input
+                                type="radio"
+                                value="dp->ff"
+                                checked={type === "dp->ff"}
+                                onChange={(e) => setType(e.target.value)}
+                                className="mr-1"
+                            />
+                            Discrete → Fund Flow
+                        </label>
                     </div>
                 </div>
 
+                <button
+                    onClick={calc}
+                    className="px-4 py-2 bg-gray-800 text-white rounded-md shadow"
+                >
+                    Convert
+                </button>
             </div>
-        </>
-    )
+
+            {/* Inputs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <InputComponent
+                    text="Amount"
+                    input={amount}
+                    hint="Fund-Flow or Discrete amount"
+                    setState={setAmount}
+                />
+
+                <InputComponent
+                    text="Interest"
+                    input={interest}
+                    hint="Enter interest rate"
+                    setState={setInterest}
+                />
+            </div>
+
+            {/* Result (centered) */}
+            <div className="pt-2 text-center">
+                <h3 className="text-lg font-semibold mb-1">Result</h3>
+                <div className="text-xl">{result}</div>
+            </div>
+        </div>
+    );
 }

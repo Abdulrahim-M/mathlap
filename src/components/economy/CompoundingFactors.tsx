@@ -98,53 +98,65 @@ export default function CompoundingFactors() {
     const inputsToRender = inputMap[selected] || [];
 
     return (
-        <>
-            <div className=" items-center justify-between m-5 ">
-                <h2 className="text-xl font-semibold mt-2 mb-1">Interest Calculation Type</h2>
-                <select
-                    value={group}
-                    onChange={(e) => {
-                        setGroup(e.target.value as Group);
-                        setSelected(formulaGroups[e.target.value as Group][0].key); // auto reset formula
-                    }}
-                    className="block w-full mb-4 px-4 py-2 border rounded-lg dark:bg-neutral-900"
-                >
-                    <option value="discrete">Discrete Compounding</option>
-                    <option value="continuous">Continuous Compounding</option>
-                    <option value="fundflow">Fund Flow</option>
-                </select>
-                <h2 className="text-xl font-semibold mt-2 mb-1">Formula</h2>
-                <select
-                    value={selected}
-                    onChange={(e) => setSelected(e.target.value)}
-                    className="block w-full mb-4 px-4 py-2 border rounded-lg dark:bg-neutral-900"
-                >
-                    {formulaGroups[group].map((f) => (
-                        <option key={f.key} value={f.key}>
-                            {f.label}
-                        </option>
-                    ))}
-                </select>
+        <div className="flex flex-col gap-6 ">
+            <h2 className="text-2xl font-semibold text-center">Compounding Factors</h2>
+
+            {/* Settings */}
+            <div className="flex flex-col gap-4">
+                <div>
+                    <h3 className="font-medium mb-1">Interest Calculation Type</h3>
+                    <select
+                        value={group}
+                        onChange={(e) => {
+                            const g = e.target.value as Group;
+                            setGroup(g);
+                            setSelected(formulaGroups[g][0].key);
+                        }}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-neutral-900"
+                    >
+                        <option value="discrete">Discrete Compounding</option>
+                        <option value="continuous">Continuous Compounding</option>
+                        <option value="fundflow">Fund Flow</option>
+                    </select>
+                </div>
+
+                <div>
+                    <h3 className="font-medium mb-1">Formula</h3>
+                    <select
+                        value={selected}
+                        onChange={(e) => setSelected(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-lg dark:bg-neutral-900"
+                    >
+                        {formulaGroups[group].map((f) => (
+                            <option key={f.key} value={f.key}>
+                                {f.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
                 <button
-                    onClick={() => {calc();}}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                    onClick={calc}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md"
                 >
                     Calculate
                 </button>
             </div>
 
-            <div className="flex flex-col flex-1 items-center justify-center">
-                {inputsToRender.map(({text, state, hint}) => (
-                    <InputComponent key={text} text={text} input={state[0]} setState={state[1]} hint={hint} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {inputsToRender.map((i) => (
+                    <InputComponent key={i.text} text={i.text} input={i.state[0]} setState={i.state[1]} hint={i.hint} />
                 ))}
-                <InputComponent text={'Interest Rate (i)'} input={interestRate} setState={setI} hint={"Interest Rate"} />
-                <InputComponent text={'Compound Frequency (n)'} input={compoundFreq} setState={setN} hint={"Compound Frequency"} />
+                <InputComponent text="Interest Rate (i)" input={interestRate} setState={setI} hint="Interest Rate" />
+                <InputComponent text="Compound Frequency (n)" input={compoundFreq} setState={setN} hint="Compound Frequency" />
             </div>
 
-            <div className="flex flex-col flex-1 items-center justify-center m-3">
-                <h1 className="text-2xl font-bold">{ (selected === "(F/G i,n)" || selected === "(F/G r,n)") ? "Discrete Payments" : "Result" }</h1>
-                <div className="text-xl mt-4">{result}$</div>
+            <div className="pt-2 text-center">
+                <h3 className="text-lg font-semibold mb-1">
+                    {(selected === "(F/G i,n)" || selected === "(F/G r,n)") ? "Discrete Payments" : "Result"}
+                </h3>
+                <div className="text-xl">{result}$</div>
             </div>
-        </>
+        </div>
     )
 }
