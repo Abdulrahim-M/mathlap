@@ -1,0 +1,31 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export const actual_to_effective: (a: number, b: number) => number;
+export const main: () => void;
+export const nominal_to_effective: (a: number, b: number) => number;
+export const sp_cc_compound_amount: (a: number, b: number, c: number) => number;
+export const ep_ff_capital_recovery: (a: number, b: number, c: number) => number;
+export const ug_series: (a: number, b: number, c: number) => number;
+export const ep_ff_compound_amount: (a: number, b: number, c: number) => number;
+export const ep_dp_ff_conversion: (a: number, b: number) => number;
+export const ep_ff_dp_conversion: (a: number, b: number) => number;
+export const ep_compound_amount: (a: number, b: number, c: number) => number;
+export const ep_cc_present_worth: (a: number, b: number, c: number) => number;
+export const ep_ff_sinking_fund: (a: number, b: number, c: number) => number;
+export const ep_cc_capital_recovery: (a: number, b: number, c: number) => number;
+export const ep_sinking_fund: (a: number, b: number, c: number) => number;
+export const ug_cc_series: (a: number, b: number, c: number) => number;
+export const ep_capital_recovery: (a: number, b: number, c: number) => number;
+export const sp_present_worth: (a: number, b: number, c: number) => number;
+export const ep_cc_sinking_fund: (a: number, b: number, c: number) => number;
+export const sp_compound_amount: (a: number, b: number, c: number) => number;
+export const ep_ff_present_worth: (a: number, b: number, c: number) => number;
+export const sp_cc_present_worth: (a: number, b: number, c: number) => number;
+export const ep_cc_compound_amount: (a: number, b: number, c: number) => number;
+export const ep_present_worth: (a: number, b: number, c: number) => number;
+export const __wbindgen_free: (a: number, b: number, c: number) => void;
+export const __wbindgen_malloc: (a: number, b: number) => number;
+export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+export const __wbindgen_externrefs: WebAssembly.Table;
+export const __wbindgen_start: () => void;
